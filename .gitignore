@@ -4,3 +4,68 @@ result-*
 
 # Ignore automatically generated direnv output
 .direnv
+
+# --- General ---
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# --- Nix ---
+# Ignore Nix build results and garbage collection roots
+/result
+/result-*
+.direnv/
+.envrc
+
+# --- Node.js / pnpm ---
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Dependency directories
+# Crucially, Nix handles dependencies, so these should ALWAYS be ignored.
+/node_modules
+.pnpm-store/
+
+# Optional ESLint cache
+.eslintcache
+
+# --- Astro ---
+# Build output directory
+/dist/
+/.astro/
+
+# --- IDE / Editor ---
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# JetBrains
+.idea/
+
+# --- Secrets / Environment Variables ---
+# Never commit secrets!
+*.env
+.env
+.env.*
+!*.env.example
+
+# --- Kubernetes / Deployment ---
+# If you store sensitive kubeconfig files in the project (not recommended)
+kubeconfig
+*.kubeconfig
