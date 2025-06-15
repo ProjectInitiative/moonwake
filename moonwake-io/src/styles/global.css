@@ -31,6 +31,9 @@
 	font-style: normal;
 	font-display: swap;
 }
+html {
+  overflow-y: scroll;
+}
 body {
 	font-family: 'Atkinson', sans-serif;
 	margin: 0;

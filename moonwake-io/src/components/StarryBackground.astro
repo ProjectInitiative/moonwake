@@ -1,6 +1,6 @@
 ---
-// This final version removes the problematic twinkling.png layer and relies on the superior
-// JS-driven shimmer effect for a clean, correct background.
+// This final version adds session persistence for the background position to prevent
+// a jarring refresh on page navigation.
 ---
 <div id="stars-background" class="stars"></div>
 
@@ -12,10 +12,22 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    // --- FEATURE 1: RANDOMIZE BACKGROUND POSITION ---
+    
+    // --- FEATURE 1: RANDOMIZE BACKGROUND (ONCE PER SESSION) ---
     const starsBg = document.getElementById('stars-background');
     if (starsBg) {
-      starsBg.style.backgroundPosition = `${Math.random()*100}% ${Math.random()*100}%`;
+      // Check if a position is already stored for this session
+      const storedPosition = sessionStorage.getItem('moonwakeBgPosition');
+
+      if (storedPosition) {
+        // If it exists, use it
+        starsBg.style.backgroundPosition = storedPosition;
+      } else {
+        // If not, create a new random position and store it
+        const newPosition = `${Math.random()*100}% ${Math.random()*100}%`;
+        starsBg.style.backgroundPosition = newPosition;
+        sessionStorage.setItem('moonwakeBgPosition', newPosition);
+      }
     }
 
     // --- FEATURE 2: CREATE STATIONARY SHIMMERING STARS ---
@@ -25,17 +37,13 @@
         for (let i = 0; i < NUM_SHIMMER_STARS; i++) {
             const star = document.createElement('div');
             star.className = 'shimmer-star';
-
             const size = Math.random() * 2 + 1;
             star.style.width = `${size}px`;
             star.style.height = `${size}px`;
-            
             star.style.top = `${Math.random() * 100}%`;
             star.style.left = `${Math.random() * 100}%`;
-
             star.style.animationDuration = `${Math.random() * 5 + 3}s`;
             star.style.animationDelay = `${Math.random() * 5}s`;
-
             shimmerContainer.appendChild(star);
         }
     }
