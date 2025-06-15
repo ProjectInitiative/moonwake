@@ -6,6 +6,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../../components/FormattedDate.astro';
 import { Image } from 'astro:assets';
+import '../../styles/stars.css';
 
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
@@ -16,6 +17,13 @@ const posts = (await getCollection('blog')).sort(
 <html lang="en">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<!-- The body needs to have a higher z-index to appear over the fixed-position background -->
+		<style>
+			body {
+				position: relative;
+				z-index: 0;
+			}
+		</style>
 		<style>
 			main {
 				width: 960px;
@@ -63,7 +71,9 @@ const posts = (await getCollection('blog')).sort(
 				color: rgb(var(--gray));
 			}
 			ul li a:hover h4,
-			ul li a:hover .date {
+			ul li a:focus h4,
+			ul li a:hover .date,
+			ul li a:focus .date {
 				color: rgb(var(--accent));
 			}
 			ul a:hover img {
@@ -87,6 +97,9 @@ const posts = (await getCollection('blog')).sort(
 		</style>
 	</head>
 	<body>
+		<div class="stars"></div>
+		<div class="twinkling"></div>
+		<div class="night"><div class="shooting_star"></div></div>
 		<Header />
 		<main>
 			<section>

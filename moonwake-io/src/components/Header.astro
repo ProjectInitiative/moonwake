@@ -45,10 +45,10 @@ import { SITE_TITLE } from '../consts';
 <style>
 	header {
 		margin: 0;
-		padding: 0 1em;
-	  background: rgb(var(--gray-light)); /* This variable now points to our #112240 Night Water color */
-	  border-bottom: 1px solid rgba(var(--gray), 25%); /* Add a subtle bottom border for separation */
-		box-shadow: 0 2px 8px rgba(var(--black), 5%);
+		padding: 0 1.5em;
+		background: rgba(10, 25, 47, 0.85); /* A translucent version of the background */
+		backdrop-filter: blur(10px);
+		border-bottom: 1px solid rgb(var(--gray-light));
 	}
 	h2 {
 		margin: 0;
@@ -66,7 +66,7 @@ import { SITE_TITLE } from '../consts';
 	}
 	nav a {
 		padding: 1em 0.5em;
-		color: var(--black);
+		color: rgb(var(--black));
 		border-bottom: 4px solid transparent;
 		text-decoration: none;
 	}

@@ -14,6 +14,13 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 <html lang="en">
 	<head>
 		<BaseHead title={title} description={description} />
+		<!-- The body needs to have a higher z-index to appear over the fixed-position background -->
+		<style>
+			body {
+				position: relative;
+				z-index: 0;
+			}
+		</style>
 		<style>
 			main {
 				width: calc(100% - 2em);
@@ -56,6 +63,10 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 	</head>
 
 	<body>
+		<div class="stars"></div>
+		<div class="twinkling"></div>
+		<div class="night"><div class="shooting_star"></div></div>
+
 		<Header />
 		<main>
 			<article>
