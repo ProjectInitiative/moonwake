@@ -1,6 +1,7 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
+import StarryBackground from '../components/StarryBackground.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import '../styles/stars.css';
@@ -32,9 +33,7 @@ import '../styles/stars.css';
 		</style>
 	</head>
 	<body>
-		<div class="stars"></div>
-		<div class="twinkling"></div>
-		<div class="night"><div class="shooting_star"></div></div>
+		<StarryBackground />
 		<Header />
 		<main>
 			<section class="hero">

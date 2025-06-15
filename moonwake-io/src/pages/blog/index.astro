@@ -6,6 +6,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../../components/FormattedDate.astro';
 import { Image } from 'astro:assets';
+import StarryBackground from '../../components/StarryBackground.astro';
 import '../../styles/stars.css';
 
 const posts = (await getCollection('blog')).sort(
@@ -97,9 +98,7 @@ const posts = (await getCollection('blog')).sort(
 		</style>
 	</head>
 	<body>
-		<div class="stars"></div>
-		<div class="twinkling"></div>
-		<div class="night"><div class="shooting_star"></div></div>
+		<StarryBackground />
 		<Header />
 		<main>
 			<section>

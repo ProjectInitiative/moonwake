@@ -1,4 +1,4 @@
-/* moonwake-io/src/styles/stars.css */
+/* moonwake-io/src/styles/stars.css - v2 with multiple stars */
 @keyframes move-background {
     from {
         -webkit-transform: translate3d(0px, 0px, 0px);
@@ -46,7 +46,9 @@
   background: linear-gradient(-45deg, #64ffda, rgba(0, 0, 255, 0));
   border-radius: 999px;
   filter: drop-shadow(0 0 6px #64ffda);
-  animation: tail 3000ms ease-in-out infinite, shooting 3000ms ease-in-out infinite;
+  animation: 
+    tail 3000ms ease-in-out infinite,
+    shooting 3000ms ease-in-out infinite;
 }
 
 .shooting_star::before, .shooting_star::after {
@@ -64,6 +66,56 @@
 .shooting_star::after {
   transform: translateX(50%) rotateZ(-45deg);
 }
+
+/* --- NEW STYLES FOR MULTIPLE STARS --- */
+
+.shooting_star:nth-child(1) {
+  top: 50%;
+  left: -50%;
+  animation-delay: -3.4s;
+}
+
+.shooting_star:nth-child(2) {
+  top: 80%;
+  left: 40%;
+  animation-delay: -0.9s;
+}
+
+.shooting_star:nth-child(3) {
+  top: 20%;
+  left: 90%;
+  animation-delay: -2.7s;
+  animation-duration: 2500ms;
+}
+
+.shooting_star:nth-child(4) {
+  top: 10%;
+  left: 20%;
+  animation-delay: -1.3s;
+  transform: scale(0.8);
+}
+
+.shooting_star:nth-child(5) {
+  top: 90%;
+  left: -20%;
+  animation-delay: -4.5s;
+  transform: scale(1.2);
+}
+
+.shooting_star:nth-child(6) {
+    top: 60%;
+    left: 60%;
+    animation-delay: -6s;
+    animation-duration: 3500ms;
+}
+
+.shooting_star:nth-child(7) {
+    top: 40%;
+    left: 0%;
+    animation-delay: -7.2s;
+    transform: scale(0.9);
+}
+
 
 @keyframes tail {
   0% {
@@ -94,6 +146,6 @@
     transform: translateX(0);
   }
   100% {
-    transform: translateX(300px);
+    transform: translateX(350px);
   }
 }
