@@ -1,15 +1,84 @@
 ---
-// This component just outputs the HTML for our animated background.
-// The CSS that styles it is imported globally by the pages that use it.
+// This is the definitive version. It uses a nested structure to solve all positioning conflicts
+// and a JS-triggered class to fire the bloom animation only at the end of the star's life.
 ---
 <div class="stars"></div>
 <div class="twinkling"></div>
-<div class="night">
-    <div class="shooting_star"></div>
-    <div class="shooting_star"></div>
-    <div class="shooting_star"></div>
-    <div class="shooting_star"></div>
-    <div class="shooting_star"></div>
-    <div class="shooting_star"></div>
-    <div class="shooting_star"></div>
-</div>
+<div id="night-sky" class="night"></div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const nightSky = document.getElementById('night-sky');
+    if (!nightSky) return;
+
+    const NUM_STARS = 15;
+
+    const resetStar = (placer) => {
+      // Clean up classes from previous run
+      placer.classList.remove('animate');
+      const star = placer.querySelector('.shooting_star');
+      if (star) {
+        star.classList.remove('is-exploding');
+      }
+      
+      void placer.offsetWidth; // Force browser reflow
+
+      // Get the nested elements
+      const rotator = placer.querySelector('.star-rotator');
+      
+      if (rotator && star) {
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+
+        // 1. Position the Placer
+        placer.style.setProperty('--x', `${Math.random() * vw}px`);
+        placer.style.setProperty('--y', `${Math.random() * vh}px`);
+
+        // 2. Rotate the Rotator
+        const angle = Math.random() * 360;
+        rotator.style.setProperty('--angle', `${angle}deg`);
+
+        // 3. Set the Star's animation duration
+        const duration = Math.random() * 4000 + 3000; // 3 to 7 seconds
+        star.style.animationDuration = `${duration}ms`;
+
+        // Start the main animation
+        placer.classList.add('animate');
+      }
+    };
+
+    // --- Main Setup ---
+    for (let i = 0; i < NUM_STARS; i++) {
+      // Create the nested structure
+      const placer = document.createElement('div');
+      placer.className = 'star-placer';
+
+      const rotator = document.createElement('div');
+      rotator.className = 'star-rotator';
+
+      const star = document.createElement('div');
+      star.className = 'shooting_star';
+
+      rotator.appendChild(star);
+      placer.appendChild(rotator);
+      nightSky.appendChild(placer);
+
+      // Listen for when the main animation ends
+      star.addEventListener('animationend', (event) => {
+        // We only care about the main path animation ending
+        if (event.animationName === 'shooting-path') {
+          // Trigger the bloom/explosion animation
+          star.classList.add('is-exploding');
+
+          // After the short bloom animation, reset the whole thing
+          setTimeout(() => {
+            const delay = Math.random() * 4000 + 2000;
+            setTimeout(() => resetStar(placer), delay);
+          }, 300); // Wait for bloom to finish (must match bloom animation duration)
+        }
+      });
+
+      setTimeout(() => resetStar(placer), Math.random() * 7000);
+    }
+  });
+</script>
