@@ -1,6 +1,6 @@
 ---
-// This is the definitive version. It uses a nested structure to solve all positioning conflicts
-// and a JS-triggered class to fire the bloom animation only at the end of the star's life.
+// This is the definitive version. It uses a clean nested structure and lets the CSS
+// handle the entire, correct animation lifecycle.
 ---
 <div class="stars"></div>
 <div class="twinkling"></div>
@@ -14,17 +14,11 @@
     const NUM_STARS = 15;
 
     const resetStar = (placer) => {
-      // Clean up classes from previous run
       placer.classList.remove('animate');
-      const star = placer.querySelector('.shooting_star');
-      if (star) {
-        star.classList.remove('is-exploding');
-      }
-      
       void placer.offsetWidth; // Force browser reflow
 
-      // Get the nested elements
       const rotator = placer.querySelector('.star-rotator');
+      const star = placer.querySelector('.shooting_star');
       
       if (rotator && star) {
         const vw = window.innerWidth;
@@ -35,21 +29,19 @@
         placer.style.setProperty('--y', `${Math.random() * vh}px`);
 
         // 2. Rotate the Rotator
-        const angle = Math.random() * 360;
-        rotator.style.setProperty('--angle', `${angle}deg`);
+        rotator.style.setProperty('--angle', `${Math.random() * 360}deg`);
 
-        // 3. Set the Star's animation duration
+        // 3. Set the animation duration for the Star and its bloom
         const duration = Math.random() * 4000 + 3000; // 3 to 7 seconds
         star.style.animationDuration = `${duration}ms`;
 
-        // Start the main animation
+        // Start the entire animation cycle
         placer.classList.add('animate');
       }
     };
 
     // --- Main Setup ---
     for (let i = 0; i < NUM_STARS; i++) {
-      // Create the nested structure
       const placer = document.createElement('div');
       placer.className = 'star-placer';
 
@@ -63,21 +55,17 @@
       placer.appendChild(rotator);
       nightSky.appendChild(placer);
 
-      // Listen for when the main animation ends
+      // Listen for when the animation cycle on the STAR element finishes
       star.addEventListener('animationend', (event) => {
-        // We only care about the main path animation ending
+        // We only care about one animation ending to prevent multiple triggers
         if (event.animationName === 'shooting-path') {
-          // Trigger the bloom/explosion animation
-          star.classList.add('is-exploding');
-
-          // After the short bloom animation, reset the whole thing
-          setTimeout(() => {
-            const delay = Math.random() * 4000 + 2000;
-            setTimeout(() => resetStar(placer), delay);
-          }, 300); // Wait for bloom to finish (must match bloom animation duration)
+          // Once the star has finished its life, wait a bit, then reset it
+          const delay = Math.random() * 5000 + 2000;
+          setTimeout(() => resetStar(placer), delay);
         }
       });
 
+      // Stagger the initial start of each star
       setTimeout(() => resetStar(placer), Math.random() * 7000);
     }
   });

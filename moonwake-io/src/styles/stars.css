@@ -1,4 +1,4 @@
-/* moonwake-io/src/styles/stars.css - v11: The Architecturally Correct Final Version */
+/* moonwake-io/src/styles/stars.css - v12: The Original Perfect Animation, Randomized Correctly */
 @keyframes move-background {
     from { -webkit-transform: translate3d(0px, 0px, 0px); }
     to { -webkit-transform: translate3d(1000px, 0px, 0px); }
@@ -31,7 +31,6 @@
   top: var(--y, 0px);
   left: var(--x, 0px);
   opacity: 0;
-  transition: opacity 0.2s linear;
 }
 
 /* 2. The Rotator: responsible ONLY for rotation */
@@ -49,11 +48,10 @@
   transform-origin: left center;
 }
 
-/* When the placer gets animated, it becomes visible */
+/* When the placer gets animated, it becomes visible, and the star starts its animations */
 .star-placer.animate {
   opacity: 1;
 }
-/* This also triggers the animations on the star itself */
 .star-placer.animate .shooting_star {
   animation-name: shooting-path, tail-lifecycle;
   animation-duration: inherit;
@@ -61,27 +59,29 @@
   animation-iteration-count: 1;
 }
 
-/* The bloom effect, which is HIDDEN by default */
+/* The bloom/twinkle effect on the pseudo-elements */
 .shooting_star::before, .shooting_star::after {
   content: '';
   position: absolute;
   top: calc(50% - 1px);
-  right: 0; /* Attach to the head of the star */
+  right: 0;
   height: 2px;
   background: linear-gradient(-45deg, transparent, #64ffda, transparent);
   border-radius: 100%;
   transform: translateX(50%) rotateZ(45deg);
-  opacity: 0; /* Start invisible */
-  width: 0;
 }
 .shooting_star::after {
   transform: translateX(50%) rotateZ(-45deg);
 }
-
-/* THE FINAL BLOOM: Triggered only when the 'is-exploding' class is added by JS */
-.shooting_star.is-exploding::before, .shooting_star.is-exploding::after {
-  animation: bloom-effect 300ms ease-out forwards;
+/* The bloom animation is ALSO triggered when the parent is animated */
+.star-placer.animate .shooting_star::before,
+.star-placer.animate .shooting_star::after {
+  animation-name: shining-lifecycle;
+  animation-duration: inherit;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1;
 }
+
 
 /* --- KEYFRAMES --- */
 
@@ -96,7 +96,10 @@
   100% { width: 0; }
 }
 
-@keyframes bloom-effect {
-  from { width: 0; opacity: 1; }
-  to   { width: 30px; opacity: 0; }
+/* THE KEY FIX: The bloom animation is defined to happen only at the end of the duration */
+@keyframes shining-lifecycle {
+  0%   { width: 0; opacity: 0; }
+  90%  { width: 0; opacity: 0; } /* Invisible for most of the life */
+  95%  { width: 30px; opacity: 1; } /* Quickly blooms to full size */
+  100% { width: 0; opacity: 0; } /* Fades away */
 }
